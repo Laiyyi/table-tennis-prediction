@@ -168,13 +168,12 @@ def main(args):
             pred_rows.append({"rally_uid": int(rid), "serverGetPoint": s_prob, "pointId": point_pred, "actionId": action_pred})
     pred_df = pd.DataFrame(pred_rows).sort_values("rally_uid")
   
-    out = pd.DataFrame({"rally_uid": test["rally_uid"].unique()})
-    out = out.merge(pred_df, on="rally_uid", how="left")
-    # reorder
-    out = out[["rally_uid", "actionId", "pointId", "serverGetPoint"]]
-
+    pred_df = pd.DataFrame(pred_rows).sort_values("rally_uid")
+    out = pred_df[["rally_uid", "actionId", "pointId", "serverGetPoint"]]
     out.to_csv(args.out, index=False)
+
     print(f"Saved submission to: {args.out}"); 
+    
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
